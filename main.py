@@ -97,7 +97,7 @@ class MyPlugin(Star):
     @filter.event_message_type(filter.EventMessageType.GROUP_MESSAGE)
     async def auto_reply(self, event: AstrMessageEvent):
         message_text = event.get_message_str() or ""
-        if "男朋友" in message_text or ("小男生" in message_text and "可爱" in message_text):
+        if "男朋友" in message_text or ("男生" in message_text and "可爱" in message_text):
             await event.send(event.plain_result("是男生就不要找男朋友，yx除外"))
     
     @filter.command("autothumb")
