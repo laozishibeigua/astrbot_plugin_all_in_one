@@ -1,6 +1,8 @@
 ﻿from astrbot.api.event import filter, AstrMessageEvent, MessageChain
 from astrbot.api.star import Context, Star
 from astrbot.api import logger
+import httpx
+import time
 
 class MyPlugin(Star):
     def __init__(self, context: Context):
@@ -92,6 +94,8 @@ class MyPlugin(Star):
             )
             return
 
+        event.stop_event()
+
         # await event.send(event.plain_result(f"发送成功，target_session={target_session}"))
 
     @filter.event_message_type(filter.EventMessageType.GROUP_MESSAGE)
@@ -100,9 +104,52 @@ class MyPlugin(Star):
         if "男朋友" in message_text or ("男生" in message_text and "可爱" in message_text):
             await event.send(event.plain_result("是男生就不要找男朋友，yx除外"))
     
-    @filter.command("autothumb")
-    async def auto_thumb(self, event: AstrMessageEvent):
-        pass
+
+    def get_cf_contest_info(self):
+        cf_contest_request = httpx.get("https://codeforces.com/api/contest.list?gym=false")
+        
+        if cf_contest_request.status_code != 200:
+            return "小北瓜查不到欸，是不是CF又爆炸了？"
+        
+        cf_contest_result  = cf_contest_request.json()
+
+        if cf_contest_result.status != "OK":
+            return "小北瓜查不到欸，是不是CF又爆炸了？"
+        
+        contests_info = [] # not all string 
+        contest_result_recent5 = cf_contest_result["result"][:5][::-1] # get first 5 contest and reverse
+
+        for contest_result in contest_result_recent5:
+            if contest_result["phaze"] == "finished":
+                break
+            contest_info = []
+            contest_info.append(contest_result["name"])
+            contest_info.append(contest_result["startTimeSeconds"])
+            contest_info.append(contest_result["durationSeconds"])
+
+        final_cf_contest_info = ""
+
+        for contest_info in contests_info:
+            final_cf_contest_info =  "--------------------"
+            final_cf_contest_info += contest_info[0]
+            final_cf_contest_info += "开始时间：" + time.strftime("%Y年%m月%d日 %H:%M:%S", contest_info[1])
+            final_cf_contest_info += "持续时间：" + str(contest_info[2] // 3600) + "小时" + (str(contest_info[2] % 3600 // 60) + "分钟" if contest_info[2] % 3600 != 0 else "") 
+        return final_cf_contest_info
+
+    def get_atc_contest_info(self):
+        pass 
+    
+    @filter.command("cpcquery")
+    async def cpc_query(self, event: AstrMessageEvent):
+
+        cf_context_info = self.get_cf_contest_info()
+        
+        final_message =  "即将到来的比赛：\n"
+        final_message += "CodeForces:\n"
+        final_message += cf_context_info
+
+        await event.send(event.plain_result(final_message))
+
 
     async def terminate(self):
         """可选实现异步插件销毁。"""
