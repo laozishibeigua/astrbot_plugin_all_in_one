@@ -120,7 +120,7 @@ class MyPlugin(Star):
         contest_result_recent5 = cf_contest_result["result"][:5][::-1] # get first 5 contest and reverse
 
         for contest_result in contest_result_recent5:
-            if contest_result["phaze"] == "finished":
+            if contest_result["phase"] == "finished":
                 break
             contest_info = []
             contest_info.append(contest_result["name"])
