@@ -113,7 +113,7 @@ class MyPlugin(Star):
         
         cf_contest_result  = cf_contest_request.json()
 
-        if cf_contest_result.status != "OK":
+        if cf_contest_result["status"] != "OK":
             return "小北瓜查不到欸，是不是CF又爆炸了？"
         
         contests_info = [] # not all string 
