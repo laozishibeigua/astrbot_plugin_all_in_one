@@ -121,7 +121,7 @@ class MyPlugin(Star):
 
         for contest_result in contest_result_recent5:
             if contest_result["phase"] == "finished":
-                break
+                continue
             contest_info = []
             contest_info.append(contest_result["name"])
             contest_info.append(contest_result["startTimeSeconds"])
@@ -131,10 +131,10 @@ class MyPlugin(Star):
         final_cf_contest_info = ""
 
         for contest_info in contests_info:
-            final_cf_contest_info =  "--------------------"
-            final_cf_contest_info += contest_info[0]
-            final_cf_contest_info += "开始时间：" + time.strftime("%Y年%m月%d日 %H:%M:%S", contest_info[1])
-            final_cf_contest_info += "持续时间：" + str(contest_info[2] // 3600) + "小时" + (str(contest_info[2] % 3600 // 60) + "分钟" if contest_info[2] % 3600 != 0 else "") 
+            final_cf_contest_info +=  "--------------------\n"
+            final_cf_contest_info += contest_info[0] + "\n"
+            final_cf_contest_info += "开始时间：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(contest_info[1])) + "\n"
+            final_cf_contest_info += "持续时间：" + str(contest_info[2] // 3600) + "小时" + (str(contest_info[2] % 3600 // 60) + "分钟" if contest_info[2] % 3600 != 0 else "") + "\n"
         return final_cf_contest_info
 
     def get_atc_contest_info(self):
