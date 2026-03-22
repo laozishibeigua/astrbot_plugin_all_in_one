@@ -126,6 +126,7 @@ class MyPlugin(Star):
             contest_info.append(contest_result["name"])
             contest_info.append(contest_result["startTimeSeconds"])
             contest_info.append(contest_result["durationSeconds"])
+            contests_info.append(contest_info)
 
         final_cf_contest_info = ""
 
