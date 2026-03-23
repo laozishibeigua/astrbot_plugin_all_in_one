@@ -112,7 +112,10 @@ class MyPlugin(Star):
             for contest_info in contests_info:
                 final_contest_info += "--------------------\n"
                 final_contest_info += contest_info[0] + "\n"
-                final_contest_info += "开始时间：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(contest_info[1])) + "\n"
+                if isinstance(contests_info[1], str):
+                    final_contest_info += contest_info[1] + "\n"
+                else:
+                    final_contest_info += "开始时间：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(contest_info[1])) + "\n"
                 final_contest_info += "持续时间：" + str(contest_info[2] // 3600) + "小时" + (str(contest_info[2] % 3600 // 60) + "分钟" if contest_info[2] % 3600 != 0 else "") + "\n"
         
             return final_contest_info
