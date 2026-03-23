@@ -113,7 +113,7 @@ class MyPlugin(Star):
                 final_contest_info += "--------------------\n"
                 final_contest_info += contest_info[0] + "\n"
                 if isinstance(contest_info[1], str):
-                    final_contest_info += contest_info[1] + "\n"
+                    final_contest_info += "开始时间：" + contest_info[1] + "\n"
                 else:
                     final_contest_info += "开始时间：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(contest_info[1])) + "\n"
                 final_contest_info += "持续时间：" + str(contest_info[2] // 3600) + "小时" + (str(contest_info[2] % 3600 // 60) + "分钟" if contest_info[2] % 3600 != 0 else "") + "\n"
@@ -196,6 +196,7 @@ class MyPlugin(Star):
         final_message =  "即将到来的比赛：\n"
         final_message += "CodeForces:\n"
         final_message += cf_context_info
+        final_message += "--------------------"
         final_message += "Atcoder:\n"
         final_message += atc_context_info
 
