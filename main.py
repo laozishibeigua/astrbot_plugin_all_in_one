@@ -196,6 +196,7 @@ class MyPlugin(Star):
         final_message =  "即将到来的比赛：\n"
         final_message += "CodeForces:\n"
         final_message += cf_context_info
+        final_message += "\n"
         final_message += "Atcoder:\n"
         final_message += atc_context_info
 
