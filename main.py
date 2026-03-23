@@ -106,15 +106,21 @@ class MyPlugin(Star):
             await event.send(event.plain_result("是男生就不要找男朋友，yx除外"))
     
     def _build_info_string(self, contests_info, type: str) -> str :
-        final_contest_info = ""
+        try:
+            final_contest_info = ""
 
-        for contest_info in contests_info:
-            final_contest_info += "--------------------\n"
-            final_contest_info += contest_info[0] + "\n"
-            final_contest_info += "开始时间：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(contest_info[1])) + "\n"
-            final_contest_info += "持续时间：" + str(contest_info[2] // 3600) + "小时" + (str(contest_info[2] % 3600 // 60) + "分钟" if contest_info[2] % 3600 != 0 else "") + "\n"
+            for contest_info in contests_info:
+                final_contest_info += "--------------------\n"
+                final_contest_info += contest_info[0] + "\n"
+                final_contest_info += "开始时间：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(contest_info[1])) + "\n"
+                final_contest_info += "持续时间：" + str(contest_info[2] // 3600) + "小时" + (str(contest_info[2] % 3600 // 60) + "分钟" if contest_info[2] % 3600 != 0 else "") + "\n"
         
-        return final_contest_info
+            return final_contest_info
+        
+        except Exception as e:
+
+            return "垃圾代码又挂了：" + str(e)
+
 
     def _get_cf_contest_info(self):
         cf_contest_request = httpx.get("https://codeforces.com/api/contest.list?gym=false")
