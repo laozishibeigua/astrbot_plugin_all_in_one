@@ -129,12 +129,12 @@ class MyPlugin(Star):
         cf_contest_request = httpx.get("https://codeforces.com/api/contest.list?gym=false")
         
         if cf_contest_request.status_code != 200:
-            return "小北瓜查不到欸，是不是CF又爆炸了？"
+            return "小北瓜查不到欸，是不是CF又爆炸了？\n"
         
         cf_contest_result  = cf_contest_request.json()
 
         if cf_contest_result["status"] != "OK":
-            return "小北瓜查不到欸，是不是CF又爆炸了？"
+            return "小北瓜查不到欸，是不是CF又爆炸了？\n"
         
         contests_info = [] # not all string 
         contest_result_recent5 = cf_contest_result["result"][:5][::-1] # get first 5 contest and reverse
@@ -156,7 +156,7 @@ class MyPlugin(Star):
         atc_contest_request = httpx.get("https://atcoder.jp/home")
 
         if atc_contest_request.status_code != 200:
-            return "小北瓜查不到欸，是不是atc又爆炸了？"
+            return "小北瓜查不到欸，是不是atc又爆炸了？\n"
         
         elems = BeautifulSoup(atc_contest_request.text,"html.parser").select("#contest-table-upcoming a")
 
