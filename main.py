@@ -124,7 +124,6 @@ class MyPlugin(Star):
 
             return "垃圾代码又挂了：" + str(e)
 
-
     def _get_cf_contest_info(self):
         cf_contest_request = httpx.get("https://codeforces.com/api/contest.list?gym=false")
         
@@ -189,7 +188,7 @@ class MyPlugin(Star):
     
     @filter.command("cpcquery")
     async def cpc_query(self, event: AstrMessageEvent):
-
+        """用于给用户推送近期cpc比赛信息"""
         cf_context_info = self._get_cf_contest_info()
         atc_context_info = self._get_atc_contest_info()
         
