@@ -3,7 +3,6 @@ from astrbot.api.star import Context, Star
 from astrbot.api import logger
 import httpx
 import time
-from bs4 import BeautifulSoup
 
 class MyPlugin(Star):
     def __init__(self, context: Context):
@@ -102,8 +101,25 @@ class MyPlugin(Star):
     @filter.event_message_type(filter.EventMessageType.GROUP_MESSAGE)
     async def auto_reply(self, event: AstrMessageEvent):
         message_text = event.get_message_str() or ""
-        if "男朋友" in message_text or ("男生" in message_text and "可爱" in message_text):
+
+        umo = event.unified_msg_origin
+        provider_id = await self.context.get_current_chat_provider_id(umo=umo)
+
+        final_prompt =  "以下是一个男性用户的发言，你的任务根据他的发言判断他是否有喜欢男性的倾向，"
+        final_prompt += "如果你认为他有这种倾向，你只需要回复一个 1， 如果没有，你只需要回复一个 0，"
+        final_prompt += "注意！你应该只回复一个 0 或者 1！不要回复其他东西！\n"
+        final_prompt += "以下是他的发言：" + message_text
+
+        llm_resp = await self.context.llm_generate(
+            chat_provider_id=provider_id,
+            prompt=final_prompt,
+        )
+
+        if "1" in llm_resp.completion_text:
             await event.send(event.plain_result("是男生就不要找男朋友，yx除外"))
+
+#        if "男朋友" in message_text or ("男生" in message_text and "可爱" in message_text):
+#            await event.send(event.plain_result("是男生就不要找男朋友，yx除外"))
     
     async def terminate(self):
         """可选实现异步插件销毁。"""
