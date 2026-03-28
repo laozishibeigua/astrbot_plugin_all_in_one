@@ -106,7 +106,7 @@ class MyPlugin(Star):
         provider_id = await self.context.get_current_chat_provider_id(umo=umo)
 
         final_prompt =  "以下是一个男性用户的发言，你的任务根据他的发言判断他是否有喜欢男性的倾向，"
-        final_prompt += "如果你认为他有这种倾向，你只需要回复一个 1， 如果没有，你只需要回复一个 0，"
+        final_prompt += "如果你认为他可能有这种倾向（有一点点可能也算！），你只需要回复一个 1， 如果没有，你只需要回复一个 0，"
         final_prompt += "注意！你应该只回复一个 0 或者 1！不要回复其他东西！\n"
         final_prompt += "以下是他的发言：" + message_text
 
