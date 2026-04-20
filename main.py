@@ -101,9 +101,11 @@ class MyPlugin(Star):
 
     @filter.event_message_type(filter.EventMessageType.GROUP_MESSAGE)
     async def auto_reply(self, event: AstrMessageEvent):
+        
+        if np.random.rand() >= 0.6:  # 40% 的概率处理消息
+            return
 
         try:
-
             message_text = event.get_message_str() or ""
 
             umo = event.unified_msg_origin
@@ -120,15 +122,19 @@ class MyPlugin(Star):
             )
 
             if "1" in llm_resp.completion_text:
-                await event.send(event.plain_result("是男生就不要找男朋友，yx除外"))
+                
+                if umo == "aiocqhttp:GroupMessage:837472044":
+                    await event.send(event.plain_result("是男生就不要找男朋友，yx除外"))
+                if umo == "aiocqhttp:GroupMessage:1064627451":
+                    await event.send(event.plain_result("是女生就不要找女朋友，mx除外"))
 
 #        if "男朋友" in message_text or ("男生" in message_text and "可爱" in message_text):
 #            await event.send(event.plain_result("是男生就不要找男朋友，yx除外"))
         except Exception as e:
-            
+            # 遇到异常，直接不处理
             logger.exception(f"auto_reply failed, err={e}")
 
-            if np.random.rand() < 0.1:  # 10% 的概率回复
+            if np.random.rand() < 0.05:  # 5% 的概率回复
                 await event.send(event.plain_result("喵呜~"))
     
     async def terminate(self):
