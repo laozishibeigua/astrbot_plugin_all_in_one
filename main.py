@@ -122,10 +122,12 @@ class MyPlugin(Star):
             )
 
             if "1" in llm_resp.completion_text:
+
+                logger.info(f"消息来源：{umo}")
                 
-                if umo == "aiocqhttp:GroupMessage:837472044":
+                if "837472044" in umo:
                     await event.send(event.plain_result("是男生就不要找男朋友，yx除外"))
-                if umo == "aiocqhttp:GroupMessage:1064627451":
+                if "1064627451" in umo:
                     await event.send(event.plain_result("是女生就不要找女朋友，mx除外"))
 
 #        if "男朋友" in message_text or ("男生" in message_text and "可爱" in message_text):
